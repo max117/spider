@@ -57,8 +57,8 @@ public class Grab51ca2Execute {
       
       Long start = System.currentTimeMillis();
       new Grab51ca2Execute().grab51ca2SingleThread();
-      System.out.println("共耗时："+(System.currentTimeMillis()-start));
       
+      System.out.println("共耗时："+(System.currentTimeMillis()-start));
   }
 }
 
