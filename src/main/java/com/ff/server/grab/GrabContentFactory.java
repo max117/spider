@@ -1,5 +1,8 @@
 package com.ff.server.grab;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
@@ -13,9 +16,10 @@ import org.jsoup.nodes.Document;
 import com.ff.bean.GrabContentBean;
 import com.ff.bean.NbInfoBean;
 import com.ff.param.CommonParam;
-import com.ff.utils.HtmlRegexpUtil;
 
 public class GrabContentFactory {
+    
+    Map<String, String> areaTagsMap = new HashMap<String, String>();
     
     /**
      * @Title: get51CaContent 
@@ -126,6 +130,7 @@ public class GrabContentFactory {
      */
     public NbInfoBean get51Ca2Content(String url) {
 
+        initAreaTags();
         HttpClient httpClient = HttpClientFactory.getCloseableHttpClient();
         NbInfoBean nbInfo = new NbInfoBean();
         
@@ -145,22 +150,25 @@ public class GrabContentFactory {
                         String title = element.select("span").first().text();
                         element.select("span").first().remove();
                         switch (title){
+                        case("【服务地区】") : nbInfo.setCatalogTags(element.text()); break;
                         case("【地图信息】") : nbInfo.setMapGoogle(element.select("a").attr("href")); break;
                         }
                     }
                 });
                 
                 nbInfo.setTitle(doc.select("div#TitleBox").text());
-                // 根据地图判断地址
-                if(null != nbInfo.getMapGoogle() && nbInfo.getMapGoogle().trim().length()>0){
+                // 判断地址标签
+                if(null != nbInfo.getAreaTags() && nbInfo.getAreaTags().trim().length()>0){
                     // http://maps.google.com/maps?f=q&geocode=&q=M1P+5J4&output=js
-                    
+                    if(!areaTagsMap.containsKey(nbInfo.getAreaTags())){
+                        nbInfo.setAreaTags("1");
+                    }
                 }
                 nbInfo.setSourceUrl(url);
-                // 过滤所有html标签
-                nbInfo.setContent(HtmlRegexpUtil.filterHtml(doc.select("div#FontPlus").html()));
+//                // 过滤所有html标签
+//                nbInfo.setContent(HtmlRegexpUtil.filterHtml(doc.select("div#FontPlus").html()));
                 // 保留P标签
-//                nbInfo.setContent(doc.select("div#FontPlus").select("p").removeAttr("class").removeAttr("style").outerHtml().replaceAll("<(?!/?(?i)(p)).*?>",""));
+                nbInfo.setContent(doc.select("div#FontPlus").select("p").removeAttr("class").removeAttr("style").outerHtml().replaceAll("<(?!/?(?i)(p)).*?>",""));
                 nbInfo.setSnapContent(doc.select("div#FontPlus").html());
             }
             response.close();
@@ -169,5 +177,30 @@ public class GrabContentFactory {
         }
         
         return nbInfo;
+    }
+    
+    /**
+     * @Title: initAreaTags 
+     * @Description: 初始化地区标签
+     * @date 2014年10月28日 下午7:32:27 
+     * @return void 
+     * @throws
+     */
+    public void initAreaTags(){
+        
+        areaTagsMap.put("多伦多", "Toronto city");
+        areaTagsMap.put("马克汉姆", "Markham");
+        areaTagsMap.put("旺市", "Vaughan");
+        areaTagsMap.put("列治文山", "Richmond hill");
+        areaTagsMap.put("密西沙加", "Mississauga");
+        areaTagsMap.put("皮克林", "Pickering");
+        areaTagsMap.put("汉密尔顿", "Hamilton");
+        areaTagsMap.put("尼亚加拉", "Niagara");
+        areaTagsMap.put("北约克", "North York");
+        areaTagsMap.put("士嘉堡", "Scarborough");
+        areaTagsMap.put("东约克", "East York");
+        areaTagsMap.put("约克", "York");
+        areaTagsMap.put("怡陶碧谷", "Etobicoke");
+        areaTagsMap.put("汤山", "Thornhill");
     }
 }
