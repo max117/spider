@@ -87,6 +87,7 @@ public class GrabUrlFactory {
                 if (entity != null) {
                     // 注意此处的编码，否则会出现乱码
                     String html = EntityUtils.toString(entity, CommonParam.CHARSET_51CA);
+                    
                     Document doc = Jsoup.parse(html);
                     // 2.抽取正文URL
                     Elements urlElements = doc.select("ol#ItemList>li>h3>a[href]");

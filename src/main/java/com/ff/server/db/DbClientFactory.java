@@ -14,7 +14,7 @@ import com.jolbox.bonecp.BoneCPDataSource;
  */
 public class DbClientFactory {
     
-    private static final String MYSQL_URL = "jdbc:mysql://localhost:3306/business";
+    private static final String MYSQL_URL = "jdbc:mysql://localhost:3306/newsbeing";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
 

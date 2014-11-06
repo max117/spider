@@ -16,6 +16,7 @@ import org.jsoup.nodes.Document;
 import com.ff.bean.GrabContentBean;
 import com.ff.bean.NbInfoBean;
 import com.ff.param.CommonParam;
+import com.ff.utils.HtmlRegexpUtil;
 
 public class GrabContentFactory {
     
@@ -150,7 +151,7 @@ public class GrabContentFactory {
                         String title = element.select("span").first().text();
                         element.select("span").first().remove();
                         switch (title){
-                        case("【服务地区】") : nbInfo.setCatalogTags(element.text()); break;
+                        case("【服务地区】") : nbInfo.setAreaTags(element.text()); break;
                         case("【地图信息】") : nbInfo.setMapGoogle(element.select("a").attr("href")); break;
                         }
                     }
@@ -168,7 +169,10 @@ public class GrabContentFactory {
 //                // 过滤所有html标签
 //                nbInfo.setContent(HtmlRegexpUtil.filterHtml(doc.select("div#FontPlus").html()));
                 // 保留P标签
-                nbInfo.setContent(doc.select("div#FontPlus").select("p").removeAttr("class").removeAttr("style").outerHtml().replaceAll("<(?!/?(?i)(p)).*?>",""));
+                String content = doc.select("div#FontPlus").select("p").removeAttr("class").removeAttr("style").outerHtml().replaceAll("<(?!/?(?i)(p)).*?>","");
+                nbInfo.setContent(content);
+                nbInfo.setSummary(HtmlRegexpUtil.filterHtml(content).length()>200?HtmlRegexpUtil.filterHtml(content).substring(0,200):HtmlRegexpUtil.filterHtml(content).substring(0,HtmlRegexpUtil.filterHtml(content).length()));
+
                 nbInfo.setSnapContent(doc.select("div#FontPlus").html());
             }
             response.close();

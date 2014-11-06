@@ -14,9 +14,9 @@ public class Grab51ca2Execute {
 
     public void grab51ca2SingleThread(){
         
-      String service_type1 = "家庭旅馆";
-      String service_caturl_1 = "http://www.51.ca/service/servicedisplay.php?s=e1fca39766bb1b33afbf4ef6c39c9ef2&serviceid=3";
-      String service_caturl_2 = "http://www.51.ca/service/servicedisplay.php?s=e1fca39766bb1b33afbf4ef6c39c9ef2&serviceid=112";
+//      String service_type1 = "家庭旅馆";
+//      String service_caturl_1 = "http://www.51.ca/service/servicedisplay.php?s=e1fca39766bb1b33afbf4ef6c39c9ef2&serviceid=3";
+//      String service_caturl_2 = "http://www.51.ca/service/servicedisplay.php?s=e1fca39766bb1b33afbf4ef6c39c9ef2&serviceid=112";
       
 //      String service_type1 = "接送服务";
 //      String service_caturl_1 = "http://www.51.ca/service/servicedisplay.php?s=e1fca39766bb1b33afbf4ef6c39c9ef2&serviceid=2";
@@ -25,9 +25,9 @@ public class Grab51ca2Execute {
 //      String service_type1 = "旅游保险";
 //      String service_caturl_1 = "http://www.51.ca/service/servicedisplay.php?s=e1fca39766bb1b33afbf4ef6c39c9ef2&serviceid=12";
 //
-//      String service_type1 = "地产中介";
-//      String service_caturl_1 = "http://www.51.ca/service/servicedisplay.php?s=e1fca39766bb1b33afbf4ef6c39c9ef2&serviceid=15";
-//      String service_caturl_2 = "http://www.51.ca/service/servicedisplay.php?s=e1fca39766bb1b33afbf4ef6c39c9ef2&serviceid=79";
+      String service_type1 = "地产中介";
+      String service_caturl_1 = "http://www.51.ca/service/servicedisplay.php?s=e1fca39766bb1b33afbf4ef6c39c9ef2&serviceid=15";
+      String service_caturl_2 = "http://www.51.ca/service/servicedisplay.php?s=e1fca39766bb1b33afbf4ef6c39c9ef2&serviceid=79";
 
       
       GrabUrlFactory grabUrlFactory = new GrabUrlFactory();
@@ -35,6 +35,7 @@ public class Grab51ca2Execute {
       List<NbInfoBean> nbInfoList = Lists.newArrayList();
       NbInfoDao nbInfoDao = new NbInfoDao();
       ArrayList<String> caturlList = Lists.newArrayList(
+//              service_caturl_1
               service_caturl_1,
               service_caturl_2
               );
