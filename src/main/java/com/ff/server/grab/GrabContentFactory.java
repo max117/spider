@@ -1,5 +1,7 @@
 package com.ff.server.grab;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -181,9 +183,19 @@ public class GrabContentFactory {
             CloseableHttpResponse response = (CloseableHttpResponse) httpClient.execute(httpget, new BasicHttpContext());
             HttpEntity entity = response.getEntity();
             if (entity != null) {
+
                 // 注意此处的编码，否则会出现乱码
-                String html = EntityUtils.toString(entity, CommonParam.CHARSET_51CA);
-                Document doc = Jsoup.parse(html);
+                StringBuilder html = new StringBuilder();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(entity.getContent(), CommonParam.CHARSET_51CA), 8192);
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    html.append(line + "\n");
+                }
+                reader.close();
+                // String html = EntityUtils.toString(entity,
+                // CommonParam.CHARSET_51CA);
+
+                Document doc = Jsoup.parse(html.toString());
                 // 抽取信息
                 doc.select("table#PostBox>tbody>tr>td").parallelStream().forEach(element -> {
                     if (element.select("span").size() > 0) {
